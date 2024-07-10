@@ -4,7 +4,7 @@
 
 - [Examples of work](https://github.com/Super-Sonic-Validator#examples-of-work)
 
-- [Contacts](https://github.com/Super-Sonic-Validator#contact)
+- [Contacts](https://github.com/Super-Sonic-Validator#contacts)
 
 # About Super Sonic team
 

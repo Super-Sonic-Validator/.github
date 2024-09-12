@@ -106,6 +106,74 @@ branch 'main' set up to track 'origin/main'
 ```
 More can be viewed in our [gitbook](https://super-sonic.gitbook.io/supersonic/aleo-deploy-dapp)
 
+## Dill Node
+```
+#Update your server
+sudo apt update && sudo apt upgrade -y
+
+#Install Dependencies
+sudo apt install build-essential git curl jq docker.io -y
+
+#Install Go
+wget https://golang.org/dl/go1.20.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+go version
+
+#Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+#Clone the Dill Repository
+git clone https://github.com/DillProject/dill-node.git
+cd dill-node
+
+#git clone https://github.com/DillProject/dill-node.git
+cd dill-node
+
+#Build the Dill Node
+make build
+./dilld version
+
+#Initialize the Validator
+./dilld init Supersonic --chain-id=dill-mainnet
+
+#Configure Node Settings
+#Edit the configuration files located in $HOME/.dilld/config/. Update the config.toml and app.toml for optimal performance. Here are some recommendations:
+#Increase max_num_inbound_peers and max_num_outbound_peers.
+#Configure your external IP under the p2p section.
+
+#Download Genesis File
+curl -s https://raw.githubusercontent.com/DillProject/mainnet/master/genesis.json > $HOME/.dilld/config/genesis.json
+
+#Start the Dill Node
+./dilld start
+
+#Create and Fund Your Validator
+./dilld keys add SupersonicWallet
+
+#Create the Validator
+./dilld tx staking create-validator \
+  --amount=1000000udill \
+  --from=SupersonicWallet \
+  --commission-rate="0.10" \
+  --commission-max-rate="0.20" \
+  --commission-max-change-rate="0.01" \
+  --min-self-delegation="1" \
+  --pubkey=$(./dilld tendermint show-validator) \
+  --moniker="Supersonic" \
+  --chain-id=dill-mainnet
+
+#Confirm Validator Status
+./dilld query staking validator $(./dilld tendermint show-validator)
+
+#Maintain Your Validator
+journalctl -u dilld -f
+
+```
+More can be viewed in our [gitbook](https://super-sonic.gitbook.io/supersonic/aleo-deploy-dapp)
+
 # Contacts
 
 [Twitter](https://twitter.com/supsonic_team) | [GitBook](https://super-sonic.gitbook.io/supersonic) | [KeyBase](https://keybase.io/supsonic)

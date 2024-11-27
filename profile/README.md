@@ -16,6 +16,8 @@ As the blockchain landscape continues to evolve, so too will the challenges and 
 
 We have been involved in projects such as 
 
+- SGE
+- Kujira
 - 0G
 - Babylon
 - Aleo
